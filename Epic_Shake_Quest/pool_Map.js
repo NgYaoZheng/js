@@ -27,7 +27,7 @@ class pool_Map extends Phaser.Scene {
       frameHeight: 49,
     });
 
-    this.load.spritesheet("human6_Jump", "assets/human6_Jump.png", {
+    this.load.spritesheet("human6_Jump", "assets/human6_jump.png", {
       frameWidth: 50,
       frameHeight: 60,
     });

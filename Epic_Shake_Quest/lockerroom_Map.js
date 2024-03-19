@@ -33,7 +33,7 @@ class lockerroom_Map extends Phaser.Scene {
       frameHeight: 49,
     });
 
-    this.load.spritesheet("human1_Jump", "assets/human1_Jump.png", {
+    this.load.spritesheet("human1_Jump", "assets/human1_jump.png", {
       frameWidth: 50,
       frameHeight: 60,
     });
@@ -43,7 +43,7 @@ class lockerroom_Map extends Phaser.Scene {
       frameHeight: 50,
     });
 
-    this.load.spritesheet("human2_Jump", "assets/human2_Jump.png", {
+    this.load.spritesheet("human2_Jump", "assets/human2_jump.png", {
       frameWidth: 50,
       frameHeight: 61,
     });

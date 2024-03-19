@@ -37,7 +37,7 @@ class gym_Map extends Phaser.Scene {
       frameHeight: 50,
     });
 
-    this.load.spritesheet("human3_Jump", "assets/human3_Jump.png", {
+    this.load.spritesheet("human3_Jump", "assets/human3_jump.png", {
       frameWidth: 50,
       frameHeight: 61,
     });
@@ -47,7 +47,7 @@ class gym_Map extends Phaser.Scene {
       frameHeight: 53,
     });
 
-    this.load.spritesheet("human4_Jump", "assets/human4_Jump.png", {
+    this.load.spritesheet("human4_Jump", "assets/human4_jump.png", {
       frameWidth: 50,
       frameHeight: 64,
     });
@@ -57,7 +57,7 @@ class gym_Map extends Phaser.Scene {
       frameHeight: 49,
     });
 
-    this.load.spritesheet("human5_Jump", "assets/human5_Jump.png", {
+    this.load.spritesheet("human5_Jump", "assets/human5_jump.png", {
       frameWidth: 50,
       frameHeight: 60,
     });
