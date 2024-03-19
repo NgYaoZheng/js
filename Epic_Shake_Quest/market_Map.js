@@ -437,6 +437,8 @@ class market_Map extends Phaser.Scene {
       null,
       this
     );
+
+
   } // end of create //
 
   update() {
@@ -458,62 +460,6 @@ class market_Map extends Phaser.Scene {
         console.log("Door6");
         this.street_Map();
       }
-    }
-
-    if (window.item6 == 1) {
-      this.add
-        .image(5, 5, "wheat_Powder_Strike")
-        .setOrigin(0, 0)
-        .setScale(0.05)
-        .setScrollFactor(0);
-    }
-
-    if (window.item5 == 1) {
-      this.add
-        .image(5, 5, "milk_Strike")
-        .setOrigin(0, 0)
-        .setScale(0.05)
-        .setScrollFactor(0);
-    }
-
-    if (window.item7 == 1) {
-      this.add
-        .image(5, 5, "berries_Strike")
-        .setOrigin(0, 0)
-        .setScale(0.05)
-        .setScrollFactor(0);
-    }
-
-    if (window.item10 == 1) {
-      this.add
-        .image(5, 5, "bananas_Strike")
-        .setOrigin(0, 0)
-        .setScale(0.05)
-        .setScrollFactor(0);
-    }
-
-    if (window.item8 == 1) {
-      this.add
-        .image(5, 5, "honey_Strike")
-        .setOrigin(0, 0)
-        .setScale(0.05)
-        .setScrollFactor(0);
-    }
-
-    if (window.item9 == 1) {
-      this.add
-        .image(5, 5, "spinach_Strike")
-        .setOrigin(0, 0)
-        .setScale(0.05)
-        .setScrollFactor(0);
-    }
-
-    if (window.item11 == 1) {
-      this.add
-        .image(5, 5, "ice_Cubes_Strike")
-        .setOrigin(0, 0)
-        .setScale(0.05)
-        .setScrollFactor(0);
     }
 
     if (this.cursors.left.isDown) {
@@ -538,42 +484,78 @@ class market_Map extends Phaser.Scene {
     console.log("collect_Milk");
     item5.disableBody(true, true);
     window.item5 = 1;
+    this.add
+    .image(5, 5, "milk_Strike")
+    .setOrigin(0, 0)
+    .setScale(0.05)
+    .setScrollFactor(0);
   }
 
   collect_Wheat_Powder(player, item6) {
     console.log("collect_Wheat_Powder");
     item6.disableBody(true, true);
     window.item6 = 1;
+    this.add
+    .image(5, 5, "wheat_Powder_Strike")
+    .setOrigin(0, 0)
+    .setScale(0.05)
+    .setScrollFactor(0);
   }
 
   collect_Berries(player, item7) {
     console.log("collect_Berries");
     item7.disableBody(true, true);
     window.item7 = 1;
+    this.add
+    .image(5, 5, "berries_Strike")
+    .setOrigin(0, 0)
+    .setScale(0.05)
+    .setScrollFactor(0);
   }
 
   collect_Honey(player, item8) {
     console.log("collect_Honey");
     item8.disableBody(true, true);
     window.item8 = 1;
+    this.add
+    .image(5, 5, "honey_Strike")
+    .setOrigin(0, 0)
+    .setScale(0.05)
+    .setScrollFactor(0);
   }
 
   collect_Spinach(player, item9) {
     console.log("collect_Spinach");
     item9.disableBody(true, true);
     window.item9 = 1;
+
+    this.add
+      .image(5, 5, "spinach_Strike")
+      .setOrigin(0, 0)
+      .setScale(0.05)
+      .setScrollFactor(0);
   }
 
   collect_Banana(player, item10) {
     console.log("collect_Banana");
     item10.disableBody(true, true);
     window.item10 = 1;
+    this.add
+    .image(5, 5, "bananas_Strike")
+    .setOrigin(0, 0)
+    .setScale(0.05)
+    .setScrollFactor(0);
   }
 
   collect_Ice_Cubes(player, item11) {
     console.log("collect_Ice_Cubes");
     item11.disableBody(true, true);
     window.item11 = 1;
+    this.add
+    .image(5, 5, "ice_Cubes_Strike")
+    .setOrigin(0, 0)
+    .setScale(0.05)
+    .setScrollFactor(0);
   }
 
   street_Map(player, tile) {

@@ -22,6 +22,8 @@ class gym_Map extends Phaser.Scene {
     this.load.image("wall2", "assets/walltexture.png");
     this.load.image("ground", "assets/Wood.png");
 
+    // this.load.audio("sound1", "assets/sound_1.wav")
+
     this.load.spritesheet("blender", "assets/blender.png", {
       frameWidth: 24,
       frameHeight: 35,
@@ -120,6 +122,11 @@ class gym_Map extends Phaser.Scene {
       0,
       0
     );
+
+// this.sound1 = this.sound.add("sound1")
+
+
+
 
     this.anims.create({
       key: "blender_Anim",
@@ -480,12 +487,14 @@ class gym_Map extends Phaser.Scene {
 
   collect_Blender(player, item1) {
     console.log("collect_Blender");
+    // this.sound1.play()
     item1.disableBody(true, true);
     window.item1 = 1;
   }
 
   collect_Measuring_Cup(player, item4) {
     console.log("collect_Measuring_Cup");
+    // this.sound1.play()
     item4.disableBody(true, true);
     window.item4 = 1;
   }
@@ -497,6 +506,7 @@ class gym_Map extends Phaser.Scene {
 
   lockerroom_Map(player, tile) {
     console.log("lockerroom_Map function");
+    // this.sound1.play()
     let playerPos = {};
     playerPos.x = 921;
     playerPos.y = 371;

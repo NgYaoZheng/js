@@ -22,8 +22,8 @@ class ruleScene extends Phaser.Scene {
     spaceDown.on(
       "down",
       function () {
-        console.log("Spacebar pressed, goto preloadScene");
-        this.scene.start("preloadScene");
+        console.log("Spacebar pressed, goto instructionScene");
+        this.scene.start("instructionScene");
       },
       this
     );

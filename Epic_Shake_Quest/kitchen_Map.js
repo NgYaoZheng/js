@@ -87,6 +87,7 @@ class kitchen_Map extends Phaser.Scene {
       .setOrigin(0, 0)
       .setScale(1.5);
     this.p_Measuring_Cup.setVisible(false);
+    
 
     this.p_Blender = this.add
       .image(175, 175, "p_Blender")
@@ -94,17 +95,21 @@ class kitchen_Map extends Phaser.Scene {
       .setScale(1.5);
     this.p_Blender.setVisible(false);
 
+
+
     this.p_Cup = this.add
       .image(200, 230, "p_Cup")
       .setOrigin(0, 0)
       .setScale(1.5);
     this.p_Cup.setVisible(false);
 
+
     this.p_Spoon = this.add
       .image(285, 195, "p_Spoon")
       .setOrigin(0, 0)
       .setScale(1.5);
     this.p_Spoon.setVisible(false);
+
 
     this.anims.create({
       key: "avatar-up",
@@ -278,6 +283,7 @@ class kitchen_Map extends Phaser.Scene {
       this.gym_Map();
     }
 
+   
     if (
       window.item5 == 1 &&
       window.item6 == 1 &&
@@ -293,12 +299,15 @@ class kitchen_Map extends Phaser.Scene {
         this.player.y < 323 &&
         this.player.y > 143
       ) {
-        this.item1_appear(),
+        window.itemAppear = 1
+        window.character_change = 1;
+      }
+
+      if (window.itemAppear == 1) {
+      this.item1_appear()
           this.item2_appear(),
           this.item3_appear(),
           this.item4_appear();
-
-        window.character_change = 1;
       }
     }
 
@@ -360,4 +369,6 @@ class kitchen_Map extends Phaser.Scene {
   item4_appear(player, item) {
     this.p_Spoon.setVisible(true);
   }
+
+  
 }
