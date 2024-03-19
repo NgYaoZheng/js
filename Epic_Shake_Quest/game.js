@@ -10,8 +10,8 @@ let config = {
         }
     },
     backgroundColor: '#000000',
-    scene: [openingScene, storylineScene, ruleScene, preloadScene, gym_Map, kitchen_Map, lockerroom_Map, pool_Map, street_Map, market_Map]
-
+    scene: [preloadScene, gym_Map, kitchen_Map, lockerroom_Map, pool_Map, street_Map, market_Map]
+    // openingScene, storylineScene, ruleScene, 
 };
 
 let game = new Phaser.Game(config);

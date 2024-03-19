@@ -17,14 +17,14 @@ class preloadScene extends Phaser.Scene {
 
     var spaceDown = this.input.keyboard.addKey("SPACE");
 
-    spaceDown.on(
-      "down",
-      function () {
-        console.log("Spacebar pressed, goto storylineScene");
-        this.scene.start("storylineScene");
-      },
-      this
-    );
+    // spaceDown.on(
+    //   "down",
+    //   function () {
+    //     console.log("Spacebar pressed, goto storylineScene");
+    //     this.scene.start("storylineScene");
+    //   },
+    //   this
+    // );
 
     spaceDown.on(
       "down",

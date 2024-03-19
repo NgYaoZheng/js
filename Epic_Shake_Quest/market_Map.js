@@ -290,38 +290,6 @@ class market_Map extends Phaser.Scene {
       repeat: -1,
     });
 
-    // this.anims.create({
-    //     key:'avatar_Protein_Shake-up',
-    //     frames:this.anims.generateFrameNumbers('avatar_Protein_Shake',
-    //     { start:105, end:112 }),
-    //     frameRate:5,
-    //     repeat:-1
-    // });
-
-    // this.anims.create({
-    //     key:'avatar_Protein_Shake-left',
-    //     frames:this.anims.generateFrameNumbers('avatar_Protein_Shake',
-    //     { start:118, end:125 }),
-    //     frameRate:5,
-    //     repeat:-1
-    // });
-
-    // this.anims.create({
-    //     key:'avatar_Protein_Shake-down',
-    //     frames:this.anims.generateFrameNumbers('avatar_Protein_Shake',
-    //     { start:131, end:138 }),
-    //     frameRate:5,
-    //     repeat:-1
-    // });
-
-    // this.anims.create({
-    //     key:'avatar_Protein_Shake-right',
-    //     frames:this.anims.generateFrameNumbers('avatar_Protein_Shake',
-    //     { start:144, end:151 }),
-    //     frameRate:5,
-    //     repeat:-1
-    // });
-
     var key1Down = this.input.keyboard.addKey(49);
     var key2Down = this.input.keyboard.addKey(50);
     var key3Down = this.input.keyboard.addKey(51);
