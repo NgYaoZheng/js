@@ -3,17 +3,14 @@ class preloadScene extends Phaser.Scene {
     super({ key: "preloadScene" });
   }
 
-  preload(){
-  this.load.image("intro_4", "assets/instruction.png");
-}
+  preload() {
+    this.load.image("intro_4", "assets/opening.png");
+  }
 
   create() {
     console.log("preloadScene");
 
-    this.add
-    .image(0, 0, "intro_4")
-    .setOrigin(0, 0)
-    .setScale(1);
+    this.add.image(0, 0, "intro_4").setOrigin(0, 0).setScale(1);
 
     var spaceDown = this.input.keyboard.addKey("SPACE");
 
@@ -36,6 +33,5 @@ class preloadScene extends Phaser.Scene {
       },
       this
     );
-
   }
 }
