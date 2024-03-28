@@ -8,6 +8,8 @@ class pool_Map extends Phaser.Scene {
     this.load.tilemapTiledJSON("world5", "assets/pool_map.tmj");
 
     // Step 2 : Preload any images here
+
+    ///////tileset////////
     this.load.image("bathroom", "assets/Bathroom_32x32.png");
     this.load.image("deco3", "assets/gather_decoration_exterior_1.3.png");
     this.load.image("deco9", "assets/gather_games_1.1.png");
@@ -17,14 +19,10 @@ class pool_Map extends Phaser.Scene {
     this.load.image("wall5", "assets/IglooWalls.png");
     this.load.image("ground2", "assets/TileAndStone.png");
 
-    this.load.spritesheet("spoon", "assets/measuring_Spoon.png", {
-      frameWidth: 28,
-      frameHeight: 33,
-    });
-
+    ///////human////////
     this.load.spritesheet("human_6", "assets/human_6.png", {
       frameWidth: 30,
-      frameHeight: 49,
+      frameHeight: 60,
     });
 
     this.load.spritesheet("human6_Jump", "assets/human6_jump.png", {
@@ -32,16 +30,37 @@ class pool_Map extends Phaser.Scene {
       frameHeight: 60,
     });
 
+    ///////avatar////////
     this.load.spritesheet("avatar", "assets/avatar.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
 
-    // this.load.spritesheet('avatar_Protein_Shake', 'assets/protein_Shake_Avatar.png',{ frameWidth:64, frameHeight:64 });
+    ///////images////////
+    this.load.image("note1", "assets/note1.png");
+    this.load.image("note2", "assets/note2.png");
+    this.load.image("note3", "assets/note3.png");
+    this.load.image("note4", "assets/note4.png");
+    this.load.image("blender_Done", "assets/blender_Done.png");
+    this.load.image("measuring_Cup_Done", "assets/measuring_Cup_Done.png");
+    this.load.image("spoon_Done", "assets/spoon_Done.png");
+    this.load.image("cup_Done", "assets/cup_Done.png");
+
+    ///////sound////////
+    this.load.audio("sound1", "assets/collect.mp3");
+    this.load.audio("sound2", "assets/door_Open.mp3");
+    this.load.audio("woohoo", "assets/woohoo.mp3");
   } // end of preload //
 
   create() {
-    console.log("animationScene");
+    console.log("pool_Map");
+
+    this.time.addEvent({
+      delya: 500,
+      callback: updateInventory,
+      callbackScope: this,
+      loop: false,
+    });
 
     //Step 3 - Create the map from main
     let map = this.make.tilemap({ key: "world5" });
@@ -75,6 +94,8 @@ class pool_Map extends Phaser.Scene {
     ];
 
     // Step 6  Load in layers by layers
+
+    ///////tileset////////
     this.ground_Layer = map.createLayer("ground_Layer", tilesArray, 0, 0);
     this.wall_Layer = map.createLayer("wall_Layer", tilesArray, 0, 0);
     this.pool_Layer = map.createLayer("pool_Layer", tilesArray, 0, 0);
@@ -85,13 +106,12 @@ class pool_Map extends Phaser.Scene {
       0
     );
 
-    this.anims.create({
-      key: "spoon_Anim",
-      frames: this.anims.generateFrameNumbers("spoon", { start: 0, end: 1 }),
-      frameRate: 5,
-      repeat: -1,
-    });
+    ///////sound////////
+    this.sound1 = this.sound.add("sound1");
+    this.sound2 = this.sound.add("sound2");
+    this.woohoo = this.sound.add("woohoo");
 
+    ///////item////////
     let spoon1 = map.findObject(
       "Object_Layer1",
       (obj) => obj.name === "spoon1"
@@ -104,22 +124,13 @@ class pool_Map extends Phaser.Scene {
         .setScale(1.5);
     }
 
+    ///////human////////
     this.anims.create({
       key: "human6_Anim",
       frames: this.anims.generateFrameNumbers("human_6", { start: 0, end: 1 }),
       frameRate: 2.5,
       repeat: -1,
     });
-
-    let human6 = map.findObject(
-      "Object_Layer1",
-      (obj) => obj.name === "human6"
-    );
-
-    this.human6 = this.physics.add
-      .sprite(human6.x, human6.y, "human_6")
-      .play("human6_Anim")
-      .setScale(1.5);
 
     this.anims.create({
       key: "human6_Jump_Anim",
@@ -131,6 +142,24 @@ class pool_Map extends Phaser.Scene {
       repeat: -1,
     });
 
+    let human6 = map.findObject(
+      "Object_Layer1",
+      (obj) => obj.name === "human6"
+    );
+
+    if (window.human6_ChangeC) {
+      this.human6 = this.physics.add
+        .sprite(human6.x, human6.y, "human_6")
+        .play("human6_Jump_Anim")
+        .setScale(1.5);
+    } else {
+      this.human6 = this.physics.add
+        .sprite(human6.x, human6.y, "human_6")
+        .play("human6_Anim")
+        .setScale(1.5);
+    }
+
+    ///////avatar////////
     this.anims.create({
       key: "avatar-up",
       frames: this.anims.generateFrameNumbers("avatar", {
@@ -171,67 +200,7 @@ class pool_Map extends Phaser.Scene {
       repeat: -1,
     });
 
-    var key1Down = this.input.keyboard.addKey(49);
-    var key2Down = this.input.keyboard.addKey(50);
-    var key3Down = this.input.keyboard.addKey(51);
-    var key4Down = this.input.keyboard.addKey(52);
-    var key6Down = this.input.keyboard.addKey(54);
-    var key7Down = this.input.keyboard.addKey(55);
-
-    key1Down.on(
-      "down",
-      function () {
-        console.log("Key 1 pressed");
-        this.scene.start("gym_Map");
-      },
-      this
-    );
-
-    key2Down.on(
-      "down",
-      function () {
-        console.log("Key 2 pressed");
-        this.scene.start("kitchen_Map");
-      },
-      this
-    );
-
-    key3Down.on(
-      "down",
-      function () {
-        console.log("Key 3 pressed");
-        this.scene.start("lockerroom_Map");
-      },
-      this
-    );
-
-    key4Down.on(
-      "down",
-      function () {
-        console.log("Key 4 pressed");
-        this.scene.start("showerroom_Map");
-      },
-      this
-    );
-    key6Down.on(
-      "down",
-      function () {
-        console.log("Key 6 pressed");
-        this.scene.start("street_Map");
-      },
-      this
-    );
-
-    key7Down.on(
-      "down",
-      function () {
-        console.log("Key 7 pressed");
-        this.scene.start("market_Map");
-      },
-      this
-    );
-
-    this.player = this.physics.add.sprite(117, 557, "avatar").setScale(1.5);
+    this.player = this.physics.add.sprite(171, 557, "avatar").setScale(1.5);
     window.player = this.player
 
       .setSize(this.player.width * 0.3, this.player.height * 0.3)
@@ -249,23 +218,29 @@ class pool_Map extends Phaser.Scene {
     this.decoration_Layer.setCollisionByExclusion(-1, true);
     this.physics.add.collider(this.player, this.decoration_Layer);
 
+    ///////overlaps////////
     this.physics.add.overlap(
       this.player,
       this.item3,
-      this.collect_Spoon,
+      collect_Spoon,
       null,
       this
     );
 
-    this.physics.add.overlap(
-      this.player,
-      this.human6,
-      this.human6_change,
-      null,
-      this
-    );
+    if (window.itemAppear == 1) {
+      this.physics.add.overlap(
+        this.player,
+        this.human6,
+        this.human6_change,
+        null,
+        this
+      );
+    }
+
+    this.scene.launch("showInventory");
   } // end of create //
 
+  ///////door////////
   update() {
     if (
       this.player.x > 78 &&
@@ -277,6 +252,20 @@ class pool_Map extends Phaser.Scene {
       this.lockerroom_Map();
     }
 
+    ///////ending////////
+    if (
+      window.human1_ChangeC == 1 &&
+      window.human2_ChangeC == 1 &&
+      window.human3_ChangeC == 1 &&
+      window.human4_ChangeC == 1 &&
+      window.human5_ChangeC == 1 &&
+      window.human6_ChangeC == 1
+    ) {
+      console.log("goto endingScene");
+      this.scene.start("endingScene");
+    }
+
+    ///////avatar movement////////
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-270);
 
@@ -312,21 +301,21 @@ class pool_Map extends Phaser.Scene {
       this.player.anims.stop();
     }
   } // end of update //
-  collect_Spoon(player, item3) {
-    console.log("collect_Spoon");
-    item3.disableBody(true, true);
-    window.item3 = 1;
-  }
 
+  ///////map////////
   lockerroom_Map(player, tile) {
     console.log("lockerroom_Map function");
+    this.sound2.play();
     let playerPos = {};
     playerPos.x = 212;
-    playerPos.y = 68;
+    playerPos.y = 80;
     this.scene.start("lockerroom_Map", { player: playerPos });
   }
 
+  ///////human change////////
   human6_change(player, tile) {
     this.human6.play("human6_Jump_Anim").setScale(1.5);
+    this.woohoo.play();
+    window.human6_ChangeC = 1;
   }
 }

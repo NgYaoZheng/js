@@ -1,13 +1,11 @@
-class openingScene extends Phaser.Scene {
+class openingScene2 extends Phaser.Scene {
   constructor() {
-    super({ key: "openingScene" });
+    super({ key: "openingScene2" });
   }
 
   preload() {
-    ///////opening and sound////////
+    ///////opening////////
     this.load.image("intro_1", "assets/opening.png");
-
-    this.load.audio("bgmusic", "assets/Shake.mp3");
 
     ///////items////////
     this.load.spritesheet("blender", "assets/blender.png", {
@@ -67,12 +65,10 @@ class openingScene extends Phaser.Scene {
   }
 
   create() {
-    ///////opening and sound////////
-    console.log("openingScene");
-    this.add.image(0, 0, "intro_1").setOrigin(0, 0).setScale(1);
+    console.log("openingScene2");
 
-    this.music = this.sound.add("bgmusic", { loop: true }).setVolume(0.35);
-    this.music.play();
+    ///////opening////////
+    this.add.image(0, 0, "intro_1").setOrigin(0, 0).setScale(1);
 
     ///////items////////
     this.anims.create({
@@ -171,5 +167,6 @@ class openingScene extends Phaser.Scene {
       },
       this
     );
+    this.scene.launch("showInventory");
   }
 }

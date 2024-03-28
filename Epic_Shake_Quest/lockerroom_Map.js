@@ -13,6 +13,8 @@ class lockerroom_Map extends Phaser.Scene {
     this.load.tilemapTiledJSON("world3", "assets/lockerroom_map.tmj");
 
     // Step 2 : Preload any images here
+
+    ///////tilesets////////
     this.load.image("wall4", "assets/allwall.png");
     this.load.image("deco16", "assets/Clothing_Store_32x32.png");
     this.load.image("deco17", "assets/defimon3.png");
@@ -23,14 +25,14 @@ class lockerroom_Map extends Phaser.Scene {
     this.load.image("deco5", "assets/Music_and_sport_32x32.png");
     this.load.image("wall1", "assets/nauticalWalls.png");
 
-    this.load.spritesheet("cup", "assets/cup.png", {
-      frameWidth: 20,
-      frameHeight: 35,
-    });
+    ///////items////////
+    this.load.image("blender_Done", "assets/blender_Done.png");
+    this.load.image("measuring_Cup_Done", "assets/measuring_Cup_Done.png");
 
+    ///////human////////
     this.load.spritesheet("human_1", "assets/human_1.png", {
       frameWidth: 30,
-      frameHeight: 49,
+      frameHeight: 60,
     });
 
     this.load.spritesheet("human1_Jump", "assets/human1_jump.png", {
@@ -40,7 +42,7 @@ class lockerroom_Map extends Phaser.Scene {
 
     this.load.spritesheet("human_2", "assets/human_2.png", {
       frameWidth: 30,
-      frameHeight: 50,
+      frameHeight: 61,
     });
 
     this.load.spritesheet("human2_Jump", "assets/human2_jump.png", {
@@ -48,15 +50,37 @@ class lockerroom_Map extends Phaser.Scene {
       frameHeight: 61,
     });
 
+    ///////avatar////////
     this.load.spritesheet("avatar", "assets/avatar.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
 
+    ///////images////////
+    this.load.image("note1", "assets/note1.png");
+    this.load.image("note2", "assets/note2.png");
+    this.load.image("note3", "assets/note3.png");
+    this.load.image("note4", "assets/note4.png");
+    this.load.image("blender_Done", "assets/blender_Done.png");
+    this.load.image("measuring_Cup_Done", "assets/measuring_Cup_Done.png");
+    this.load.image("spoon_Done", "assets/spoon_Done.png");
+    this.load.image("cup_Done", "assets/cup_Done.png");
+
+    ///////sound////////
+    this.load.audio("sound1", "assets/collect.mp3");
+    this.load.audio("sound2", "assets/door_Open.mp3");
+    this.load.audio("woohoo", "assets/woohoo.mp3");
   } // end of preload //
 
   create() {
-    console.log("animationScene");
+    console.log("lockerroom_Map");
+
+    this.time.addEvent({
+      delya: 500,
+      callback: updateInventory,
+      callbackScope: this,
+      loop: false,
+    });
 
     //Step 3 - Create the map from main
 
@@ -96,6 +120,8 @@ class lockerroom_Map extends Phaser.Scene {
     ];
 
     // Step 6  Load in layers by layers
+
+    ///////tileset////////
     this.ground_Layer = map.createLayer("ground_Layer", tilesArray, 0, 0);
     this.wall_Layer = map.createLayer("wall_Layer", tilesArray, 0, 0);
     this.locker_Layer = map.createLayer("locker_Layer", tilesArray, 0, 0);
@@ -107,13 +133,12 @@ class lockerroom_Map extends Phaser.Scene {
     );
     this.other_Layer = map.createLayer("other_Layer", tilesArray, 0, 0);
 
-    this.anims.create({
-      key: "cup_Anim",
-      frames: this.anims.generateFrameNumbers("cup", { start: 0, end: 1 }),
-      frameRate: 5,
-      repeat: -1,
-    });
+    ///////sound////////
+    this.sound1 = this.sound.add("sound1");
+    this.sound2 = this.sound.add("sound2");
+    this.woohoo = this.sound.add("woohoo");
 
+    ///////item////////
     let cup1 = map.findObject("Object_Layer1", (obj) => obj.name === "cup1");
 
     if (window.item2 == 0) {
@@ -123,22 +148,13 @@ class lockerroom_Map extends Phaser.Scene {
         .setScale(1.5);
     }
 
+    ///////human////////
     this.anims.create({
       key: "human1_Anim",
       frames: this.anims.generateFrameNumbers("human_1", { start: 0, end: 1 }),
       frameRate: 2.5,
       repeat: -1,
     });
-
-    let human1 = map.findObject(
-      "Object_Layer1",
-      (obj) => obj.name === "human1"
-    );
-
-    this.human1 = this.physics.add
-      .sprite(human1.x, human1.y, "human_1")
-      .play("human1_Anim")
-      .setScale(1.5);
 
     this.anims.create({
       key: "human1_Jump_Anim",
@@ -150,22 +166,29 @@ class lockerroom_Map extends Phaser.Scene {
       repeat: -1,
     });
 
+    let human1 = map.findObject(
+      "Object_Layer1",
+      (obj) => obj.name === "human1"
+    );
+
+    if (window.human1_ChangeC) {
+      this.human1 = this.physics.add
+        .sprite(human1.x, human1.y, "human_1")
+        .play("human1_Jump_Anim")
+        .setScale(1.5);
+    } else {
+      this.human1 = this.physics.add
+        .sprite(human1.x, human1.y, "human_1")
+        .play("human1_Anim")
+        .setScale(1.5);
+    }
+
     this.anims.create({
       key: "human2_Anim",
       frames: this.anims.generateFrameNumbers("human_2", { start: 0, end: 1 }),
       frameRate: 2.5,
       repeat: -1,
     });
-
-    let human2 = map.findObject(
-      "Object_Layer1",
-      (obj) => obj.name === "human2"
-    );
-
-    this.human2 = this.physics.add
-      .sprite(human2.x, human2.y, "human_2")
-      .play("human2_Anim")
-      .setScale(1.5);
 
     this.anims.create({
       key: "human2_Jump_Anim",
@@ -177,6 +200,24 @@ class lockerroom_Map extends Phaser.Scene {
       repeat: -1,
     });
 
+    let human2 = map.findObject(
+      "Object_Layer1",
+      (obj) => obj.name === "human2"
+    );
+
+    if (window.human2_ChangeC) {
+      this.human2 = this.physics.add
+        .sprite(human2.x, human2.y, "human_2")
+        .play("human2_Jump_Anim")
+        .setScale(1.5);
+    } else {
+      this.human2 = this.physics.add
+        .sprite(human2.x, human2.y, "human_2")
+        .play("human2_Anim")
+        .setScale(1.5);
+    }
+
+    ///////avatar////////
     this.anims.create({
       key: "avatar-up",
       frames: this.anims.generateFrameNumbers("avatar", {
@@ -217,67 +258,6 @@ class lockerroom_Map extends Phaser.Scene {
       repeat: -1,
     });
 
-
-    var key1Down = this.input.keyboard.addKey(49);
-    var key2Down = this.input.keyboard.addKey(50);
-    var key4Down = this.input.keyboard.addKey(52);
-    var key5Down = this.input.keyboard.addKey(53);
-    var key6Down = this.input.keyboard.addKey(54);
-    var key7Down = this.input.keyboard.addKey(55);
-
-    key1Down.on(
-      "down",
-      function () {
-        console.log("Key 1 pressed");
-        this.scene.start("gym_Map");
-      },
-      this
-    );
-
-    key2Down.on(
-      "down",
-      function () {
-        console.log("Key 2 pressed");
-        this.scene.start("kitchen_Map");
-      },
-      this
-    );
-
-    key4Down.on(
-      "down",
-      function () {
-        console.log("Key 4 pressed");
-        this.scene.start("showerroom_Map");
-      },
-      this
-    );
-
-    key5Down.on(
-      "down",
-      function () {
-        console.log("Key 5 pressed");
-        this.scene.start("pool_Map");
-      },
-      this
-    );
-    key6Down.on(
-      "down",
-      function () {
-        console.log("Key 6 pressed");
-        this.scene.start("street_Map");
-      },
-      this
-    );
-
-    key7Down.on(
-      "down",
-      function () {
-        console.log("Key 7 pressed");
-        this.scene.start("market_Map");
-      },
-      this
-    );
-
     this.player = this.physics.add
       .sprite(this.player.x, this.player.y, "avatar")
       .setScale(1.5);
@@ -300,36 +280,39 @@ class lockerroom_Map extends Phaser.Scene {
     this.other_Layer.setCollisionByExclusion(-1, true);
     this.physics.add.collider(this.player, this.other_Layer);
 
-    this.physics.add.overlap(
-      this.player,
-      this.item2,
-      this.collect_Cup,
-      null,
-      this
-    );
+    this.physics.add.overlap(this.player, this.item2, collect_Cup, null, this);
 
-    this.physics.add.overlap(
-      this.player,
-      this.human1,
-      this.human1_change,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.player,
-      this.human2,
-      this.human2_change,
-      null,
-      this
-    );
+    ///////item appear////////
+    if (window.itemAppear == 1) {
+      this.physics.add.overlap(
+        this.player,
+        this.human1,
+        this.human1_change,
+        null,
+        this
+      );
+    }
+
+    if (window.itemAppear == 1) {
+      this.physics.add.overlap(
+        this.player,
+        this.human2,
+        this.human2_change,
+        null,
+        this
+      );
+    }
+
+    this.scene.launch("showInventory");
   } // end of create //
 
   update() {
+    ///////door////////
     if (
-      this.player.x > 945 &&
-      this.player.x < 972 &&
-      this.player.y < 450 &&
-      this.player.y > 270
+      this.player.x > 939 &&
+      this.player.x < 1000 &&
+      this.player.y < 480 &&
+      this.player.y > 300
     ) {
       console.log("Door1");
       this.gym_Map();
@@ -338,13 +321,27 @@ class lockerroom_Map extends Phaser.Scene {
     if (
       this.player.x > 125 &&
       this.player.x < 295 &&
-      this.player.y < 47 &&
+      this.player.y < 75 &&
       this.player.y > -24
     ) {
       console.log("Door4");
       this.pool_Map();
     }
 
+    ///////ending////////
+    if (
+      window.human1_ChangeC == 1 &&
+      window.human2_ChangeC == 1 &&
+      window.human3_ChangeC == 1 &&
+      window.human4_ChangeC == 1 &&
+      window.human5_ChangeC == 1 &&
+      window.human6_ChangeC == 1
+    ) {
+      console.log("goto endingScene");
+      this.scene.start("endingScene");
+    }
+
+    ///////avatar movement////////
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-270);
 
@@ -379,17 +376,12 @@ class lockerroom_Map extends Phaser.Scene {
       this.player.setVelocity(0);
       this.player.anims.stop();
     }
-
   } // end of update //
 
-  collect_Cup(player, item2) {
-    console.log("collect_Cup");
-    item2.disableBody(true, true);
-    window.item2 = 1;
-  }
-
+  ///////map////////
   gym_Map(player, tile) {
     console.log("gym_Map function");
+    this.sound2.play();
     let playerPos = {};
     playerPos.x = 58;
     playerPos.y = 755;
@@ -398,17 +390,23 @@ class lockerroom_Map extends Phaser.Scene {
 
   pool_Map(player, tile) {
     console.log("pool_Map function");
+    this.sound2.play();
     let playerPos = {};
     playerPos.x = 177;
     playerPos.y = 557;
     this.scene.start("pool_Map", { player: playerPos });
   }
 
-  human1_change(avatar_PS_player, tile) {
+  ///////human change////////
+  human1_change(avatar_PS, tile) {
     this.human1.play("human1_Jump_Anim").setScale(1.5);
+    this.woohoo.play();
+    window.human1_ChangeC = 1;
   }
 
   human2_change(player, tile) {
     this.human2.play("human2_Jump_Anim").setScale(1.5);
+    this.woohoo.play();
+    window.human2_ChangeC = 1;
   }
 }

@@ -12,6 +12,7 @@ class gym_Map extends Phaser.Scene {
     this.load.tilemapTiledJSON("world1", "assets/gym_map.tmj");
 
     // Step 2 : Preload any images here
+    ///////tile sets////////
     this.load.image("deco1", "assets/Basement_32x32.png");
     this.load.image("deco2", "assets/Classroom_and_library_32x32.png");
     this.load.image("deco3", "assets/gather_decoration_exterior_1.3.png");
@@ -22,21 +23,25 @@ class gym_Map extends Phaser.Scene {
     this.load.image("wall2", "assets/walltexture.png");
     this.load.image("ground", "assets/Wood.png");
 
-    // this.load.audio("sound1", "assets/sound_1.wav")
+    ///////images////////
+    this.load.image("note1", "assets/note1.png");
+    this.load.image("note2", "assets/note2.png");
+    this.load.image("note3", "assets/note3.png");
+    this.load.image("note4", "assets/note4.png");
+    this.load.image("blender_Done", "assets/blender_Done.png");
+    this.load.image("measuring_Cup_Done", "assets/measuring_Cup_Done.png");
+    this.load.image("spoon_Done", "assets/spoon_Done.png");
+    this.load.image("cup_Done", "assets/cup_Done.png");
 
-    this.load.spritesheet("blender", "assets/blender.png", {
-      frameWidth: 24,
-      frameHeight: 35,
-    });
+    ///////sound////////
+    this.load.audio("sound1", "assets/collect.mp3");
+    this.load.audio("sound2", "assets/door_Open.mp3");
+    this.load.audio("woohoo", "assets/woohoo.mp3");
 
-    this.load.spritesheet("measuring_Cup", "assets/measuring_Cup.png", {
-      frameWidth: 28,
-      frameHeight: 24,
-    });
-
+    ///////humans////////
     this.load.spritesheet("human_3", "assets/human_3.png", {
       frameWidth: 30,
-      frameHeight: 50,
+      frameHeight: 61,
     });
 
     this.load.spritesheet("human3_Jump", "assets/human3_jump.png", {
@@ -46,7 +51,7 @@ class gym_Map extends Phaser.Scene {
 
     this.load.spritesheet("human_4", "assets/human_4.png", {
       frameWidth: 30,
-      frameHeight: 53,
+      frameHeight: 64,
     });
 
     this.load.spritesheet("human4_Jump", "assets/human4_jump.png", {
@@ -56,7 +61,7 @@ class gym_Map extends Phaser.Scene {
 
     this.load.spritesheet("human_5", "assets/human_5.png", {
       frameWidth: 30,
-      frameHeight: 49,
+      frameHeight: 60,
     });
 
     this.load.spritesheet("human5_Jump", "assets/human5_jump.png", {
@@ -68,12 +73,17 @@ class gym_Map extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
-
-
   } // end of preload //
 
   create() {
-    console.log("animationScene");
+    console.log("gym_Map");
+
+    this.time.addEvent({
+      delya: 500,
+      callback: updateInventory,
+      callbackScope: this,
+      loop: false,
+    });
 
     //Step 3 - Create the map from main
     let map = this.make.tilemap({ key: "world1" });
@@ -111,6 +121,8 @@ class gym_Map extends Phaser.Scene {
     ];
 
     // Step 6  Load in layers by layers
+    ///////tile sets////////
+
     this.ground_Layer = map.createLayer("ground_Layer", tilesArray, 0, 0);
     this.wall_Layer = map.createLayer("wall_Layer", tilesArray, 0, 0);
     this.gym1_Layer = map.createLayer("gym1_Layer", tilesArray, 0, 0);
@@ -123,18 +135,12 @@ class gym_Map extends Phaser.Scene {
       0
     );
 
-// this.sound1 = this.sound.add("sound1")
+    ///////sounds////////
+    this.sound1 = this.sound.add("sound1");
+    this.sound2 = this.sound.add("sound2");
+    this.woohoo = this.sound.add("woohoo");
 
-
-
-
-    this.anims.create({
-      key: "blender_Anim",
-      frames: this.anims.generateFrameNumbers("blender", { start: 0, end: 1 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
+    ///////items////////
     let blender1 = map.findObject(
       "Object_Layer1",
       (obj) => obj.name === "blender1"
@@ -146,16 +152,6 @@ class gym_Map extends Phaser.Scene {
         .play("blender_Anim")
         .setScale(1.5);
     }
-
-    this.anims.create({
-      key: "measuring_Cup_Anim",
-      frames: this.anims.generateFrameNumbers("measuring_Cup", {
-        start: 0,
-        end: 1,
-      }),
-      frameRate: 5,
-      repeat: -1,
-    });
 
     let measuring_Cup1 = map.findObject(
       "Object_Layer1",
@@ -169,22 +165,13 @@ class gym_Map extends Phaser.Scene {
         .setScale(1.5);
     }
 
+    ////// humans //////
     this.anims.create({
       key: "human3_Anim",
       frames: this.anims.generateFrameNumbers("human_3", { start: 0, end: 1 }),
       frameRate: 2.5,
       repeat: -1,
     });
-
-    let human3 = map.findObject(
-      "Object_Layer1",
-      (obj) => obj.name === "human3"
-    );
-
-    this.human3 = this.physics.add
-      .sprite(human3.x, human3.y, "human_3")
-      .play("human3_Anim")
-      .setScale(1.5);
 
     this.anims.create({
       key: "human3_Jump_Anim",
@@ -196,22 +183,29 @@ class gym_Map extends Phaser.Scene {
       repeat: -1,
     });
 
+    let human3 = map.findObject(
+      "Object_Layer1",
+      (obj) => obj.name === "human3"
+    );
+
+    if (window.human3_ChangeC) {
+      this.human3 = this.physics.add
+        .sprite(human3.x, human3.y, "human_3")
+        .play("human3_Jump_Anim")
+        .setScale(1.5);
+    } else {
+      this.human3 = this.physics.add
+        .sprite(human3.x, human3.y, "human_3")
+        .play("human3_Anim")
+        .setScale(1.5);
+    }
+
     this.anims.create({
       key: "human4_Anim",
       frames: this.anims.generateFrameNumbers("human_4", { start: 0, end: 1 }),
       frameRate: 2.5,
       repeat: -1,
     });
-
-    let human4 = map.findObject(
-      "Object_Layer1",
-      (obj) => obj.name === "human4"
-    );
-
-    this.human4 = this.physics.add
-      .sprite(human4.x, human4.y, "human_4")
-      .play("human4_Anim")
-      .setScale(1.5);
 
     this.anims.create({
       key: "human4_Jump_Anim",
@@ -223,22 +217,29 @@ class gym_Map extends Phaser.Scene {
       repeat: -1,
     });
 
+    let human4 = map.findObject(
+      "Object_Layer1",
+      (obj) => obj.name === "human4"
+    );
+
+    if (window.human4_ChangeC) {
+      this.human4 = this.physics.add
+        .sprite(human4.x, human4.y, "human_4")
+        .play("human4_Jump_Anim")
+        .setScale(1.5);
+    } else {
+      this.human4 = this.physics.add
+        .sprite(human4.x, human4.y, "human_4")
+        .play("human4_Anim")
+        .setScale(1.5);
+    }
+
     this.anims.create({
       key: "human5_Anim",
       frames: this.anims.generateFrameNumbers("human_5", { start: 0, end: 1 }),
       frameRate: 2.5,
       repeat: -1,
     });
-
-    let human5 = map.findObject(
-      "Object_Layer1",
-      (obj) => obj.name === "human5"
-    );
-
-    this.human5 = this.physics.add
-      .sprite(human5.x, human5.y, "human_5")
-      .play("human5_Anim")
-      .setScale(1.5);
 
     this.anims.create({
       key: "human5_Jump_Anim",
@@ -250,6 +251,24 @@ class gym_Map extends Phaser.Scene {
       repeat: -1,
     });
 
+    let human5 = map.findObject(
+      "Object_Layer1",
+      (obj) => obj.name === "human5"
+    );
+
+    if (window.human5_ChangeC) {
+      this.human5 = this.physics.add
+        .sprite(human5.x, human5.y, "human_5")
+        .play("human5_Jump_Anim")
+        .setScale(1.5);
+    } else {
+      this.human5 = this.physics.add
+        .sprite(human5.x, human5.y, "human_5")
+        .play("human5_Anim")
+        .setScale(1.5);
+    }
+
+    ///////avatar movements////////
     this.anims.create({
       key: "avatar-up",
       frames: this.anims.generateFrameNumbers("avatar", {
@@ -290,68 +309,6 @@ class gym_Map extends Phaser.Scene {
       repeat: -1,
     });
 
-
-
-    var key2Down = this.input.keyboard.addKey(50);
-    var key3Down = this.input.keyboard.addKey(51);
-    var key4Down = this.input.keyboard.addKey(52);
-    var key5Down = this.input.keyboard.addKey(53);
-    var key6Down = this.input.keyboard.addKey(54);
-    var key7Down = this.input.keyboard.addKey(55);
-
-    key2Down.on(
-      "down",
-      function () {
-        console.log("Key 2 pressed");
-        this.scene.start("kitchen_Map");
-      },
-      this
-    );
-
-    key3Down.on(
-      "down",
-      function () {
-        console.log("Key 3 pressed");
-        this.scene.start("lockerroom_Map");
-      },
-      this
-    );
-
-    key4Down.on(
-      "down",
-      function () {
-        console.log("Key 4 pressed");
-        this.scene.start("showerroom_Map");
-      },
-      this
-    );
-
-    key5Down.on(
-      "down",
-      function () {
-        console.log("Key 5 pressed");
-        this.scene.start("pool_Map");
-      },
-      this
-    );
-    key6Down.on(
-      "down",
-      function () {
-        console.log("Key 6 pressed");
-        this.scene.start("street_Map");
-      },
-      this
-    );
-
-    key7Down.on(
-      "down",
-      function () {
-        console.log("Key 7 pressed");
-        this.scene.start("market_Map");
-      },
-      this
-    );
-
     console.log(this.player.x, this.player.y);
     this.player = this.physics.add
       .sprite(this.player.x, this.player.y, "avatar")
@@ -361,42 +318,52 @@ class gym_Map extends Phaser.Scene {
       .setSize(this.player.width * 0.3, this.player.height * 0.3)
       .setOffset(22, 45);
 
+    ///////overlaps////////
     this.physics.add.overlap(
       this.player,
       this.item1,
-      this.collect_Blender,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.player,
-      this.item4,
-      this.collect_Measuring_Cup,
+      collect_Blender,
       null,
       this
     );
 
     this.physics.add.overlap(
       this.player,
-      this.human3,
-      this.human3_change,
+      this.item4,
+      collect_Measuring_Cup,
       null,
       this
     );
-    this.physics.add.overlap(
-      this.player,
-      this.human4,
-      this.human4_change,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.player,
-      this.human5,
-      this.human5_change,
-      null,
-      this
-    );
+
+    if (window.itemAppear == 1) {
+      this.physics.add.overlap(
+        this.player,
+        this.human3,
+        this.human3_change,
+        null,
+        this
+      );
+    }
+
+    if (window.itemAppear == 1) {
+      this.physics.add.overlap(
+        this.player,
+        this.human4,
+        this.human4_change,
+        null,
+        this
+      );
+    }
+
+    if (window.itemAppear == 1) {
+      this.physics.add.overlap(
+        this.player,
+        this.human5,
+        this.human5_change,
+        null,
+        this
+      );
+    }
 
     // create the arrow keys
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -409,12 +376,15 @@ class gym_Map extends Phaser.Scene {
     this.physics.add.collider(this.player, this.gym3_Layer);
     this.decoration_Layer.setCollisionByExclusion(-1, true);
     this.physics.add.collider(this.player, this.decoration_Layer);
+
+    this.scene.launch("showInventory");
   } // end of create //
 
   update() {
+    ///////doors////////
     if (
       this.player.x > 13 &&
-      this.player.x < 45 &&
+      this.player.x < 58 &&
       this.player.y < 830 &&
       this.player.y > 665
     ) {
@@ -423,8 +393,8 @@ class gym_Map extends Phaser.Scene {
     }
 
     if (
-      this.player.x > 1231 &&
-      this.player.x < 1269 &&
+      this.player.x > 1300 &&
+      this.player.x < 1400 &&
       this.player.y < 830 &&
       this.player.y > 665
     ) {
@@ -449,6 +419,20 @@ class gym_Map extends Phaser.Scene {
       }
     }
 
+    ///////ending////////
+    if (
+      window.human1_ChangeC == 1 &&
+      window.human2_ChangeC == 1 &&
+      window.human3_ChangeC == 1 &&
+      window.human4_ChangeC == 1 &&
+      window.human5_ChangeC == 1 &&
+      window.human6_ChangeC == 1
+    ) {
+      console.log("goto endingScene");
+      this.scene.start("endingScene");
+    }
+
+    ///////avatar movement////////
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-270);
 
@@ -485,20 +469,7 @@ class gym_Map extends Phaser.Scene {
     }
   } // end of update //
 
-  collect_Blender(player, item1) {
-    console.log("collect_Blender");
-    // this.sound1.play()
-    item1.disableBody(true, true);
-    window.item1 = 1;
-  }
-
-  collect_Measuring_Cup(player, item4) {
-    console.log("collect_Measuring_Cup");
-    // this.sound1.play()
-    item4.disableBody(true, true);
-    window.item4 = 1;
-  }
-
+  ///////maps////////
   new_Map() {
     console.log("Unlock new scenes");
     this.scene_unlock.start();
@@ -506,34 +477,43 @@ class gym_Map extends Phaser.Scene {
 
   lockerroom_Map(player, tile) {
     console.log("lockerroom_Map function");
-    // this.sound1.play()
+    this.sound2.play();
     let playerPos = {};
     playerPos.x = 921;
-    playerPos.y = 371;
+    playerPos.y = 411;
     this.scene.start("lockerroom_Map", { player: playerPos });
   }
 
   kitchen_Map(player, tile) {
     console.log("kitchen_Map function");
+    this.sound2.play();
     this.scene.start("kitchen_Map");
   }
 
   street_Map(player, tile) {
     let playerPos = {};
+    this.sound2.play();
     playerPos.x = 515;
     playerPos.y = 545;
     this.scene.start("street_Map", { player: playerPos });
   }
 
+  ///////human change////////
   human3_change(player, tile) {
     this.human3.play("human3_Jump_Anim").setScale(1.5);
+    this.woohoo.play();
+    window.human3_ChangeC = 1;
   }
 
   human4_change(player, tile) {
     this.human4.play("human4_Jump_Anim").setScale(1.5);
+    this.woohoo.play();
+    window.human4_ChangeC = 1;
   }
 
   human5_change(player, tile) {
     this.human5.play("human5_Jump_Anim").setScale(1.5);
+    this.woohoo.play();
+    window.human5_ChangeC = 1;
   }
 }

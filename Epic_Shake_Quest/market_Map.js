@@ -8,11 +8,14 @@ class market_Map extends Phaser.Scene {
     this.load.tilemapTiledJSON("world7", "assets/market_map.tmj");
 
     // Step 2 : Preload any images here
+
+    ///////tileset////////
     this.load.image("wall4", "assets/allwall.png");
     this.load.image("ground3", "assets/gather_floors_2_exploration.png");
     this.load.image("market", "assets/Grocery_store_32x32.png");
     this.load.image("wall1", "assets/nauticalWalls.png");
 
+    ///////items////////
     this.load.spritesheet("wheat_Powder", "assets/wheat_Powder.png", {
       frameWidth: 24,
       frameHeight: 35,
@@ -48,6 +51,53 @@ class market_Map extends Phaser.Scene {
       frameHeight: 37,
     });
 
+    ///////death items////////
+    this.load.spritesheet("rot_banana", "assets/rotten_Banana.png", {
+      frameWidth: 28,
+      frameHeight: 30,
+    });
+
+    this.load.spritesheet("bone", "assets/bone.png", {
+      frameWidth: 27,
+      frameHeight: 30,
+    });
+
+    this.load.spritesheet("cheese", "assets/cheese.png", {
+      frameWidth: 24,
+      frameHeight: 32,
+    });
+
+    this.load.spritesheet("fish", "assets/fish.png", {
+      frameWidth: 28,
+      frameHeight: 31,
+    });
+
+    this.load.spritesheet("candy", "assets/candy.png", {
+      frameWidth: 21,
+      frameHeight: 26,
+    });
+
+    this.load.spritesheet("cockroach", "assets/cockroach.png", {
+      frameWidth: 28,
+      frameHeight: 24,
+    });
+
+    this.load.spritesheet("caution_Wet", "assets/caution_Wet.png", {
+      frameWidth: 51,
+      frameHeight: 36,
+    });
+
+    this.load.spritesheet("soda", "assets/soda.png", {
+      frameWidth: 27,
+      frameHeight: 64,
+    });
+
+    this.load.spritesheet("chips", "assets/chips.png", {
+      frameWidth: 31,
+      frameHeight: 42,
+    });
+
+    ///////images////////
     this.load.image("shopping_List", "assets/shopping_List.png");
     this.load.image("wheat_Powder_Strike", "assets/wheat_Powder_Strike.png");
     this.load.image("milk_Strike", "assets/milk_Strike.png");
@@ -57,16 +107,22 @@ class market_Map extends Phaser.Scene {
     this.load.image("spinach_Strike", "assets/spinach_Strike.png");
     this.load.image("ice_Cubes_Strike", "assets/ice_Cubes_Strike.png");
 
+    ///////sound////////
+    this.load.audio("sound1", "assets/collect.mp3");
+    this.load.audio("sound2", "assets/door_Open.mp3");
+    this.load.audio("fail", "assets/fail.mp3");
+
+    ///////avatar////////
     this.load.spritesheet("avatar", "assets/avatar.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
-
-    // this.load.spritesheet('avatar_Protein_Shake', 'assets/protein_Shake_Avatar.png',{ frameWidth:64, frameHeight:64 });
   } // end of preload //
 
   create() {
-    console.log("animationScene");
+    console.log("market_Map");
+
+    this.scene.stop("showInventory");
 
     //Step 3 - Create the map from main
     let map = this.make.tilemap({ key: "world7" });
@@ -86,6 +142,8 @@ class market_Map extends Phaser.Scene {
     let tilesArray = [wall4Tiles, ground3Tiles, marketTiles, wall1Tiles];
 
     // Step 6  Load in layers by layers
+
+    ///////tileset////////
     this.ground_Layer = map.createLayer("ground_Layer", tilesArray, 0, 0);
     this.wall_Layer = map.createLayer("wall_Layer", tilesArray, 0, 0);
     this.market1_Layer = map.createLayer("market1_Layer", tilesArray, 0, 0);
@@ -111,6 +169,12 @@ class market_Map extends Phaser.Scene {
       0
     );
 
+    ///////sound////////
+    this.sound1 = this.sound.add("sound1");
+    this.sound2 = this.sound.add("sound2");
+    this.fail = this.sound.add("fail");
+
+    ///////items////////
     this.anims.create({
       key: "milk_Anim",
       frames: this.anims.generateFrameNumbers("milk", { start: 0, end: 1 }),
@@ -244,12 +308,180 @@ class market_Map extends Phaser.Scene {
         .setScale(1.5);
     }
 
+    ///////death items////////
+    this.anims.create({
+      key: "rot_banana_Anim",
+      frames: this.anims.generateFrameNumbers("rot_banana", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let rotten_Banana = map.findObject(
+      "object_Layer1",
+      (obj) => obj.name === "rotten_Banana"
+    );
+
+    if (window.death1 == 0) {
+      this.death1 = this.physics.add
+        .sprite(rotten_Banana.x, rotten_Banana.y, "rot_banana")
+        .play("rot_banana_Anim")
+        .setScale(1.5);
+    }
+
+    this.anims.create({
+      key: "bone_Anim",
+      frames: this.anims.generateFrameNumbers("bone", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let bone = map.findObject("object_Layer1", (obj) => obj.name === "bone");
+
+    if (window.death2 == 0) {
+      this.death2 = this.physics.add
+        .sprite(bone.x, bone.y, "bone")
+        .play("bone_Anim")
+        .setScale(1.5);
+    }
+
+    this.anims.create({
+      key: "cheese_Anim",
+      frames: this.anims.generateFrameNumbers("cheese", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let cheese = map.findObject(
+      "object_Layer1",
+      (obj) => obj.name === "cheese"
+    );
+
+    if (window.death3 == 0) {
+      this.death3 = this.physics.add
+        .sprite(cheese.x, cheese.y, "cheese")
+        .play("cheese_Anim")
+        .setScale(2);
+    }
+
+    this.anims.create({
+      key: "chips_Anim",
+      frames: this.anims.generateFrameNumbers("chips", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let chips = map.findObject("object_Layer1", (obj) => obj.name === "chips");
+
+    if (window.death4 == 0) {
+      this.death4 = this.physics.add
+        .sprite(chips.x, chips.y, "chips")
+        .play("chips_Anim")
+        .setScale(1.5);
+    }
+
+    this.anims.create({
+      key: "fish_Anim",
+      frames: this.anims.generateFrameNumbers("fish", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let fish = map.findObject("object_Layer1", (obj) => obj.name === "fish");
+
+    if (window.death5 == 0) {
+      this.death5 = this.physics.add
+        .sprite(fish.x, fish.y, "fish")
+        .play("fish_Anim")
+        .setScale(1.5);
+    }
+
+    this.anims.create({
+      key: "candy_Anim",
+      frames: this.anims.generateFrameNumbers("candy", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let candy = map.findObject("object_Layer1", (obj) => obj.name === "candy");
+
+    if (window.death6 == 0) {
+      this.death6 = this.physics.add
+        .sprite(candy.x, candy.y, "candy")
+        .play("candy_Anim")
+        .setScale(2);
+    }
+
+    this.anims.create({
+      key: "cockroach_Anim",
+      frames: this.anims.generateFrameNumbers("cockroach", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let cockroach = map.findObject(
+      "object_Layer1",
+      (obj) => obj.name === "cockroach"
+    );
+
+    if (window.death7 == 0) {
+      this.death7 = this.physics.add
+        .sprite(cockroach.x, cockroach.y, "cockroach")
+        .play("cockroach_Anim")
+        .setScale(1.5);
+    }
+
+    this.anims.create({
+      key: "caution_Wet_Anim",
+      frames: this.anims.generateFrameNumbers("caution_Wet", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let caution_Wet = map.findObject(
+      "object_Layer1",
+      (obj) => obj.name === "caution_Wet"
+    );
+
+    if (window.death8 == 0) {
+      this.death8 = this.physics.add
+        .sprite(caution_Wet.x, caution_Wet.y, "caution_Wet")
+        .play("caution_Wet_Anim")
+        .setScale(1.75);
+    }
+
+    this.anims.create({
+      key: "soda_Anim",
+      frames: this.anims.generateFrameNumbers("soda", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    let soda = map.findObject("object_Layer1", (obj) => obj.name === "soda");
+
+    if (window.death9 == 0) {
+      this.death9 = this.physics.add
+        .sprite(soda.x, soda.y, "soda")
+        .play("soda_Anim")
+        .setScale(1);
+    }
+
+    ///////images////////
     this.add
       .image(5, 5, "shopping_List")
       .setOrigin(0, 0)
       .setScale(0.05)
       .setScrollFactor(0);
 
+    ///////avatar////////
     this.anims.create({
       key: "avatar-up",
       frames: this.anims.generateFrameNumbers("avatar", {
@@ -290,66 +522,6 @@ class market_Map extends Phaser.Scene {
       repeat: -1,
     });
 
-    var key1Down = this.input.keyboard.addKey(49);
-    var key2Down = this.input.keyboard.addKey(50);
-    var key3Down = this.input.keyboard.addKey(51);
-    var key4Down = this.input.keyboard.addKey(52);
-    var key5Down = this.input.keyboard.addKey(53);
-    var key6Down = this.input.keyboard.addKey(54);
-
-    key1Down.on(
-      "down",
-      function () {
-        console.log("Key 1 pressed");
-        this.scene.start("gym_Map");
-      },
-      this
-    );
-
-    key2Down.on(
-      "down",
-      function () {
-        console.log("Key 2 pressed");
-        this.scene.start("kitchen_Map");
-      },
-      this
-    );
-
-    key3Down.on(
-      "down",
-      function () {
-        console.log("Key 3 pressed");
-        this.scene.start("lockerroom_Map");
-      },
-      this
-    );
-
-    key4Down.on(
-      "down",
-      function () {
-        console.log("Key 4 pressed");
-        this.scene.start("showerroom_Map");
-      },
-      this
-    );
-    key5Down.on(
-      "down",
-      function () {
-        console.log("Key 5 pressed");
-        this.scene.start("pool_Map");
-      },
-      this
-    );
-
-    key6Down.on(
-      "down",
-      function () {
-        console.log("Key 6 pressed");
-        this.scene.start("street_Map");
-      },
-      this
-    );
-
     this.player = this.physics.add.sprite(795, 1495, "avatar").setScale(1.5);
     window.player = this.player
 
@@ -388,59 +560,125 @@ class market_Map extends Phaser.Scene {
     this.decoration2_Layer.setCollisionByExclusion(-1, true);
     this.physics.add.collider(this.player, this.decoration2_Layer);
 
-    this.physics.add.overlap(
-      this.player,
-      this.item5,
-      this.collect_Milk,
-      null,
-      this
-    );
+    ///////overlaps////////
+    this.physics.add.overlap(this.player, this.item5, collect_Milk, null, this);
     this.physics.add.overlap(
       this.player,
       this.item6,
-      this.collect_Wheat_Powder,
+      collect_Wheat_Powder,
       null,
       this
     );
     this.physics.add.overlap(
       this.player,
       this.item7,
-      this.collect_Berries,
+      collect_Berries,
       null,
       this
     );
     this.physics.add.overlap(
       this.player,
       this.item8,
-      this.collect_Honey,
+      collect_Honey,
       null,
       this
     );
     this.physics.add.overlap(
       this.player,
       this.item9,
-      this.collect_Spinach,
+      collect_Spinach,
       null,
       this
     );
     this.physics.add.overlap(
       this.player,
       this.item10,
-      this.collect_Banana,
+      collect_Banana,
       null,
       this
     );
     this.physics.add.overlap(
       this.player,
       this.item11,
-      this.collect_Ice_Cubes,
+      collect_Ice_Cubes,
       null,
       this
     );
 
+    this.physics.add.overlap(
+      this.player,
+      this.death1,
+      this.hit_Rotten,
+      null,
+      this
+    );
 
+    this.physics.add.overlap(
+      this.player,
+      this.death2,
+      this.hit_Bone,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.death3,
+      this.hit_Cheese,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.death4,
+      this.hit_Chips,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.death5,
+      this.hit_Fish,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.death6,
+      this.hit_Candy,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.death7,
+      this.hit_Cockroach,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.death8,
+      this.hit_Caution,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.death9,
+      this.hit_Soda,
+      null,
+      this
+    );
   } // end of create //
 
+  ///////door////////
   update() {
     if (
       window.item5 == 1 &&
@@ -462,6 +700,7 @@ class market_Map extends Phaser.Scene {
       }
     }
 
+    ///////avatar movement////////
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-270);
       this.player.anims.play("avatar-left", true);
@@ -480,86 +719,65 @@ class market_Map extends Phaser.Scene {
     }
   } // end of update //
 
-  collect_Milk(player, item5) {
-    console.log("collect_Milk");
-    item5.disableBody(true, true);
-    window.item5 = 1;
-    this.add
-    .image(5, 5, "milk_Strike")
-    .setOrigin(0, 0)
-    .setScale(0.05)
-    .setScrollFactor(0);
+  ///////death items////////
+  hit_Rotten(player, death1) {
+    console.log("hit_Rotten, goto rot_Banana_DeathScene");
+    this.fail.play();
+    this.scene.start("rot_Banana_DeathScene");
   }
 
-  collect_Wheat_Powder(player, item6) {
-    console.log("collect_Wheat_Powder");
-    item6.disableBody(true, true);
-    window.item6 = 1;
-    this.add
-    .image(5, 5, "wheat_Powder_Strike")
-    .setOrigin(0, 0)
-    .setScale(0.05)
-    .setScrollFactor(0);
+  hit_Bone(player, death2) {
+    console.log("hit_Bone, goto bone_DeathScene");
+    this.fail.play();
+    this.scene.start("bone_DeathScene");
   }
 
-  collect_Berries(player, item7) {
-    console.log("collect_Berries");
-    item7.disableBody(true, true);
-    window.item7 = 1;
-    this.add
-    .image(5, 5, "berries_Strike")
-    .setOrigin(0, 0)
-    .setScale(0.05)
-    .setScrollFactor(0);
+  hit_Cheese(player, death3) {
+    console.log("hit_Cheese, goto cheese_DeathScene");
+    this.fail.play();
+    this.scene.start("cheese_DeathScene");
   }
 
-  collect_Honey(player, item8) {
-    console.log("collect_Honey");
-    item8.disableBody(true, true);
-    window.item8 = 1;
-    this.add
-    .image(5, 5, "honey_Strike")
-    .setOrigin(0, 0)
-    .setScale(0.05)
-    .setScrollFactor(0);
+  hit_Chips(player, death4) {
+    console.log("hit_Chips, goto chips_DeathScene");
+    this.fail.play();
+    this.scene.start("chips_DeathScene");
   }
 
-  collect_Spinach(player, item9) {
-    console.log("collect_Spinach");
-    item9.disableBody(true, true);
-    window.item9 = 1;
-
-    this.add
-      .image(5, 5, "spinach_Strike")
-      .setOrigin(0, 0)
-      .setScale(0.05)
-      .setScrollFactor(0);
+  hit_Fish(player, death5) {
+    console.log("hit_Fish, goto fish_DeathScene");
+    this.fail.play();
+    this.scene.start("fish_DeathScene");
   }
 
-  collect_Banana(player, item10) {
-    console.log("collect_Banana");
-    item10.disableBody(true, true);
-    window.item10 = 1;
-    this.add
-    .image(5, 5, "bananas_Strike")
-    .setOrigin(0, 0)
-    .setScale(0.05)
-    .setScrollFactor(0);
+  hit_Candy(player, death6) {
+    console.log("hit_Candy, goto candy_DeathScene");
+    this.fail.play();
+    this.scene.start("candy_DeathScene");
   }
 
-  collect_Ice_Cubes(player, item11) {
-    console.log("collect_Ice_Cubes");
-    item11.disableBody(true, true);
-    window.item11 = 1;
-    this.add
-    .image(5, 5, "ice_Cubes_Strike")
-    .setOrigin(0, 0)
-    .setScale(0.05)
-    .setScrollFactor(0);
+  hit_Cockroach(player, death7) {
+    console.log("hit_Cockroach, goto cockroach_DeathScene");
+    this.fail.play();
+    this.scene.start("cockroach_DeathScene");
   }
 
+  hit_Caution(player, death8) {
+    console.log("hit_Caution, goto caution_DeathScene");
+    this.fail.play();
+    this.scene.start("caution_DeathScene");
+  }
+
+  hit_Soda(player, death9) {
+    console.log("hit_Soda, goto soda_DeathScene");
+    this.fail.play();
+    this.scene.start("soda_DeathScene");
+  }
+
+  ///////map////////
   street_Map(player, tile) {
     console.log("street_Map function");
+    this.sound2.play();
     let playerPos = {};
     playerPos.x = 2802;
     playerPos.y = 567;

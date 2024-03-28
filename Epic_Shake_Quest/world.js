@@ -10,7 +10,6 @@ class world extends Phaser.Scene {
   preload() {
     // Step 1, load JSON
     //this.load.tilemapTiledJSON("world1", "assets/Tutorial1.json");
-
     // Step 2 : Preload any images here
     //this.load.image("building", "assets/Buildings32x32.png");
     //this.load.image("street", "assets/Street32x32.png");
@@ -61,5 +60,4 @@ class world extends Phaser.Scene {
   } /////////////////// end of create //////////////////////////////
 
   update() {} /////////////////// end of update //////////////////////////////
-
 } //////////// end of class world ////////////////////////

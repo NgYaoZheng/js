@@ -12,6 +12,8 @@ class street_Map extends Phaser.Scene {
     this.load.tilemapTiledJSON("world6", "assets/street_map.tmj");
 
     // Step 2 : Preload any images here
+
+    ///////tileset////////
     this.load.image("deco13", "assets/defimon1.png");
     this.load.image("deco14", "assets/defimon2.png");
     this.load.image("building1", "assets/Floor_Modular_Buildings_32x32.png");
@@ -25,16 +27,21 @@ class street_Map extends Phaser.Scene {
     this.load.image("street", "assets/Street32x32.png");
     this.load.image("building4", "assets/Worksite_32x32.png");
 
+    ///////images////////
+    this.load.image("note2", "assets/note2.png");
+    this.load.image("note3", "assets/note3.png");
+
+    ///////avatar////////
     this.load.spritesheet("avatar", "assets/avatar.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
 
-    // this.load.spritesheet('avatar_Protein_Shake', 'assets/protein_Shake_Avatar.png',{ frameWidth:64, frameHeight:64 });
+    this.load.audio("sound2", "assets/door_Open.mp3");
   } // end of preload //
 
   create() {
-    console.log("animationScene");
+    console.log("street_Map");
 
     //Step 3 - Create the map from main
     let map = this.make.tilemap({ key: "world6" });
@@ -72,6 +79,8 @@ class street_Map extends Phaser.Scene {
     ];
 
     // Step 6  Load in layers by layers
+
+    ///////tilesets////////
     this.ground_Layer = map.createLayer("ground_Layer", tilesArray, 0, 0);
     this.street_Layer = map.createLayer("street_Layer", tilesArray, 0, 0);
     this.path_Layer = map.createLayer("path_Layer", tilesArray, 0, 0);
@@ -83,8 +92,18 @@ class street_Map extends Phaser.Scene {
       0,
       0
     );
-    // this.decoration2_Layer = map.createLayer("decoration2_Layer", tilesArray, 0, 0);
 
+    ///////images////////
+    this.note2 = this.add
+      .image(5, 5, "note2")
+      .setOrigin(0, 0)
+      .setScale(0.05)
+      .setScrollFactor(0);
+
+    ///////sound////////
+    this.sound2 = this.sound.add("sound2");
+
+    ///////avatar////////
     this.anims.create({
       key: "avatar-up",
       frames: this.anims.generateFrameNumbers("avatar", {
@@ -125,67 +144,6 @@ class street_Map extends Phaser.Scene {
       repeat: -1,
     });
 
-   
-    var key1Down = this.input.keyboard.addKey(49);
-    var key2Down = this.input.keyboard.addKey(50);
-    var key3Down = this.input.keyboard.addKey(51);
-    var key4Down = this.input.keyboard.addKey(52);
-    var key5Down = this.input.keyboard.addKey(53);
-    var key7Down = this.input.keyboard.addKey(55);
-
-    key1Down.on(
-      "down",
-      function () {
-        console.log("Key 1 pressed");
-        this.scene.start("gym_Map");
-      },
-      this
-    );
-
-    key2Down.on(
-      "down",
-      function () {
-        console.log("Key 2 pressed");
-        this.scene.start("kitchen_Map");
-      },
-      this
-    );
-
-    key3Down.on(
-      "down",
-      function () {
-        console.log("Key 3 pressed");
-        this.scene.start("lockerroom_Map");
-      },
-      this
-    );
-
-    key4Down.on(
-      "down",
-      function () {
-        console.log("Key 4 pressed");
-        this.scene.start("showerroom_Map");
-      },
-      this
-    );
-    key5Down.on(
-      "down",
-      function () {
-        console.log("Key 5 pressed");
-        this.scene.start("pool_Map");
-      },
-      this
-    );
-
-    key7Down.on(
-      "down",
-      function () {
-        console.log("Key 7 pressed");
-        this.scene.start("market_Map");
-      },
-      this
-    );
-
     this.player = this.physics.add
       .sprite(this.player.x, this.player.y, "avatar")
       .setScale(1.5);
@@ -208,6 +166,7 @@ class street_Map extends Phaser.Scene {
   } // end of create //
 
   update() {
+    ///////door////////
     if (
       this.player.x > 475 &&
       this.player.x < 543 &&
@@ -228,6 +187,28 @@ class street_Map extends Phaser.Scene {
       this.market_Map();
     }
 
+    ///////image////////
+    if (
+      window.item5 == 1 &&
+      window.item6 == 1 &&
+      window.item7 == 1 &&
+      window.item8 == 1 &&
+      window.item9 == 1 &&
+      window.item10 == 1 &&
+      window.item11 == 1
+    ) {
+      this.note2.setVisible(false),
+        (this.note3 = this.add
+          .image(5, 5, "note3")
+          .setOrigin(0, 0)
+          .setScale(0.05)
+          .setScrollFactor(0));
+    }
+
+    if (window.itemAppear == 1) {
+      this.note3.setVisible(false);
+    }
+
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-270);
       this.player.anims.play("avatar-left", true);
@@ -246,8 +227,10 @@ class street_Map extends Phaser.Scene {
     }
   } // end of update //
 
+  ///////map////////
   gym_Map(player, tile) {
     console.log("gym_Map function");
+    this.sound2.play();
     let playerPos = {};
     playerPos.x = 641;
     playerPos.y = 1191;
@@ -256,6 +239,7 @@ class street_Map extends Phaser.Scene {
 
   market_Map(player, tile) {
     console.log("market_Map function");
+    this.sound2.play();
     this.scene.start("market_Map");
   }
 }

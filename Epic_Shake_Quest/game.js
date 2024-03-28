@@ -5,9 +5,14 @@ let config = {
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
+
   backgroundColor: "#000000",
   scene: [
     openingScene,
@@ -20,6 +25,18 @@ let config = {
     pool_Map,
     street_Map,
     market_Map,
+    endingScene,
+    rot_Banana_DeathScene,
+    bone_DeathScene,
+    cheese_DeathScene,
+    soda_DeathScene,
+    cockroach_DeathScene,
+    candy_DeathScene,
+    caution_DeathScene,
+    chips_DeathScene,
+    fish_DeathScene,
+    showInventory,
+    openingScene2,
   ],
 };
 
@@ -37,3 +54,19 @@ window.item9 = 0;
 window.item10 = 0;
 window.item11 = 0;
 window.character_change = 0;
+window.itemAppear = 0;
+window.death1 = 0;
+window.death2 = 0;
+window.death3 = 0;
+window.death4 = 0;
+window.death5 = 0;
+window.death6 = 0;
+window.death7 = 0;
+window.death8 = 0;
+window.death9 = 0;
+window.human1_ChangeC = 0;
+window.human2_ChangeC = 0;
+window.human3_ChangeC = 0;
+window.human4_ChangeC = 0;
+window.human5_ChangeC = 0;
+window.human6_ChangeC = 0;
